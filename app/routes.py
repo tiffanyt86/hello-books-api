@@ -6,6 +6,7 @@ from flask import Blueprint, jsonify, abort, make_response, request
 
 books_bp = Blueprint("books_bp", __name__, url_prefix="/books")
 
+# Helper Function to validate book
 def validate_book(book_id):
     try:
         book_id = int(book_id)
@@ -52,5 +53,16 @@ def read_one_book(book_id):
             "title": book.title,
             "description": book.description
         }
+@books_bp.route("/<book_id>", methods=["PUT"])
+def update_one_book(book_id):
+    book = validate_book(book_id)
+    request_body = request.get_json()
+
+    book.title = request_body["title"]
+    book.description = request_body["description"]
+
+    db.session.commit()
+
+    return make_response(f"Book #{book_id} successfully created!", 200)
 
 
