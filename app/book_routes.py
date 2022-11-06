@@ -42,7 +42,8 @@ def read_all_books():
             {
                 "id": book.id,
                 "title": book.title,
-                "description": book.description
+                "description": book.description,
+                "author_id": book.author_id
             }
         )
     return jsonify(books_response)
@@ -60,6 +61,7 @@ def update_book(book_id):
 
     book.title = request_body["title"]
     book.description = request_body["description"]
+    book.author_id = request_body["author_id"]
 
     db.session.commit()
 
